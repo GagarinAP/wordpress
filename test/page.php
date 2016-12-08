@@ -20,6 +20,8 @@
 			<?php the_content(); ?>
 		</article>
 		<?php endwhile;
+		else :
+			echo '<p>No content found</p>';
 	endif;
 
 	get_footer();
