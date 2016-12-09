@@ -72,3 +72,41 @@
 		));
 	}
 	add_action('widgets_init','ourWidgetsInit');
+
+	//Custom color theme
+	function test_customize_register($wp_customize){
+		$wp_customize->add_setting('lwp_link_color',array(
+			'default' => '#006ec3',
+			'transport' => 'refresh',
+		));
+		$wp_customize->add_section('lwp_standard_colors',array(
+			'title' => __('Standard Colors','LearningWordpress'),
+			'priority' => 30,
+		));
+		$wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'lwp_link_color_control', array(
+				'label' => __('Link Color', 'LearningWordpress'),
+				'section' => 'lwp_standard_colors',
+				'settings' => 'lwp_link_color',
+			)));
+	}
+	add_action('customize_register','test_customize_register');
+
+	//Output customize css
+	function custom_css(){ ?>
+		<style>
+			a:link,
+			a:visited{
+				color: <?php echo get_theme_mod('lwp_link_color') ?>;
+			}
+			.site-header nav ul li.current-menu-item a:link,
+			.site-header nav ul li.current-menu-item a:visited,
+			.site-header nav ul li.current-page-ancestor a:link,
+			.site-header nav ul li.current-page-ancestor a:visited,
+			.site-footer nav ul li.current-menu-item a:link,
+			.site-footer nav ul li.current-menu-item a:visited,
+			div.hd-search #searchsubmit{	
+				background-color: <?php echo get_theme_mod('lwp_link_color') ?>;			
+			}
+		</style>
+	<?php }
+	add_action('wp_head','custom_css');
